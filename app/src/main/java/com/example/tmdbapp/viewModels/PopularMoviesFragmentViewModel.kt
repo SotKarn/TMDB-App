@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PopularMoviesFragmentViewModel @Inject constructor(private val repo: MyRepository ) : ViewModel() {
 
-    private val _index = MutableLiveData<Int>()
+
     private val _movieList = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>>
         get() = _movieList
@@ -32,10 +32,6 @@ class PopularMoviesFragmentViewModel @Inject constructor(private val repo: MyRep
         }
     }
 
-
-    fun setIndex(index: Int) {
-        _index.value = index
-    }
 }
 
 sealed class PopularMoviesEvents{

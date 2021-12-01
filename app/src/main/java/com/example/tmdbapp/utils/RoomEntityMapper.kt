@@ -2,7 +2,6 @@ package com.example.tmdbapp.utils
 
 import com.example.tmdbapp.model.cache.CachedMovie
 import com.example.tmdbapp.model.local.Movie
-import com.example.tmdbapp.model.web.WebMovieEntity
 
 class RoomEntityMapper: IEntityMapper<CachedMovie, Movie>
 {

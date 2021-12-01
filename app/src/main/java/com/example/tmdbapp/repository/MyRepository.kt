@@ -7,7 +7,6 @@ import com.example.tmdbapp.model.web.WebMovieEntity
 import com.example.tmdbapp.model.web.WebMovieReviews
 import com.example.tmdbapp.retrofit.IWebService
 import com.example.tmdbapp.room.MoviesDao
-import com.example.tmdbapp.utils.IEntityMapper
 import com.example.tmdbapp.utils.WebEntityMapper
 
 class MyRepository(

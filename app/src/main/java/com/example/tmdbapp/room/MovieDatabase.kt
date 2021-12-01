@@ -9,6 +9,6 @@ abstract class MovieDatabase: RoomDatabase(){
     abstract fun getDao(): MoviesDao
 
     companion object {
-        val DATABASE_NAME: String = "movies_db"
+        const val DATABASE_NAME: String = "movies_db"
     }
 }

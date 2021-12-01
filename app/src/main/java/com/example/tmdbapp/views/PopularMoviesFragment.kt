@@ -24,9 +24,7 @@ class PopularMoviesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PopularMoviesFragmentViewModel::class.java).apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-        }
+        viewModel = ViewModelProvider(this).get(PopularMoviesFragmentViewModel::class.java)
     }
 
     override fun onCreateView(
