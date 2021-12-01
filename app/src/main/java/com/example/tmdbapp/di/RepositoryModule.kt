@@ -3,6 +3,7 @@ package com.example.tmdbapp.di
 import com.example.tmdbapp.repository.MyRepository
 import com.example.tmdbapp.retrofit.IWebService
 import com.example.tmdbapp.room.MoviesDao
+import com.example.tmdbapp.utils.WebEntityMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,8 +16,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesRepository(webService: IWebService, dao: MoviesDao): MyRepository
+    fun providesRepository(webService: IWebService, dao: MoviesDao, webIEntityMapper: WebEntityMapper ): MyRepository
     {
-        return MyRepository(webService, dao)
+        return MyRepository(webService, dao, webIEntityMapper)
     }
 }

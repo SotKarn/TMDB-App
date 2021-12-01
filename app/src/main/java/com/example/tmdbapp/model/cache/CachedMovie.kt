@@ -17,8 +17,8 @@ data class CachedMovie(
     @ColumnInfo(name = "overview")
     val overview: String,
 
-    @ColumnInfo(name = "release_data")
-    val release_data: String,
+    @ColumnInfo(name = "release_date")
+    val release_date: String,
 
     @ColumnInfo(name = "vote_average")
     val vote_average: Float,

@@ -16,9 +16,9 @@ data class WebMovieEntity(
     @Expose
     val overview: String,
 
-    @SerializedName("release_data")
+    @SerializedName("release_date")
     @Expose
-    val release_data: String,
+    val release_date: String,
 
     @SerializedName("vote_average")
     @Expose

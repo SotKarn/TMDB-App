@@ -1,21 +1,28 @@
 package com.example.tmdbapp.repository
 
 
+import com.example.tmdbapp.model.local.Movie
 import com.example.tmdbapp.model.web.WebMoviesResponse
 import com.example.tmdbapp.model.web.WebMovieEntity
 import com.example.tmdbapp.model.web.WebMovieReviews
 import com.example.tmdbapp.retrofit.IWebService
 import com.example.tmdbapp.room.MoviesDao
+import com.example.tmdbapp.utils.IEntityMapper
+import com.example.tmdbapp.utils.WebEntityMapper
 
 class MyRepository(
     private val webService: IWebService,
-    private val dao: MoviesDao
+    private val dao: MoviesDao,
+    private val webIEntityMapper: WebEntityMapper
+
 )
 {
 
-    suspend fun getPopularMovies(): WebMoviesResponse
+    suspend fun getPopularMovies(): List<Movie>
     {
-        return webService.getPopularMovies()
+        val response = webService.getPopularMovies()
+        val webMovieList: List<WebMovieEntity> =  response.results
+        return webIEntityMapper.mapWebListToLocal(webMovieList)
     }
 
     suspend fun searchMovie(query: String): WebMoviesResponse
