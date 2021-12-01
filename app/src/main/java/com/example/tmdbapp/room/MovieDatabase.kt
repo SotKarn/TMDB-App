@@ -1,13 +1,12 @@
 package com.example.tmdbapp.room
 
-import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.tmdbapp.model.cache.MovieEntity
+import com.example.tmdbapp.model.cache.CachedMovie
 
-@Database(entities = [MovieEntity::class], version = 1, exportSchema = false)
+@Database(entities = [CachedMovie::class], version = 1, exportSchema = false)
 abstract class MovieDatabase: RoomDatabase(){
-    abstract fun getDao(): Dao
+    abstract fun getDao(): MoviesDao
 
     companion object {
         val DATABASE_NAME: String = "movies_db"

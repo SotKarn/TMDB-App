@@ -13,12 +13,5 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
 
-        var test: TestObj? = null
-
-        test?.x = 3
-
-        assertEquals(3, test?.x)
     }
 }
-
-data class TestObj(var x:Int?, var y:Int?)

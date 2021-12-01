@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "movies")
-data class MovieEntity(
+data class CachedMovie(
 
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")

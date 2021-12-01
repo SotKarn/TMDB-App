@@ -5,7 +5,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.example.tmdbapp.ui.views.SectionsPagerAdapter
+import com.example.tmdbapp.adapters.SectionsPagerAdapter
+
 import com.example.tmdbapp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
