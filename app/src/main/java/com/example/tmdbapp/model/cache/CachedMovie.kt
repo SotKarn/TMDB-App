@@ -9,7 +9,7 @@ data class CachedMovie(
 
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id:Int,
+    val id: Int,
 
     @ColumnInfo(name = "title")
     val title:String,

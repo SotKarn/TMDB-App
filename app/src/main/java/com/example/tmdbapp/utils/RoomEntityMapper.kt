@@ -1,7 +1,9 @@
 package com.example.tmdbapp.utils
 
 import com.example.tmdbapp.model.cache.CachedMovie
+import com.example.tmdbapp.model.cache.CachedMoviePage
 import com.example.tmdbapp.model.local.Movie
+import com.example.tmdbapp.model.web.WebMoviesResponse
 import javax.inject.Inject
 
 class RoomEntityMapper @Inject constructor(): IEntityMapper<CachedMovie, Movie>
@@ -31,5 +33,16 @@ class RoomEntityMapper @Inject constructor(): IEntityMapper<CachedMovie, Movie>
     fun mapLocalListToCached(list: List<Movie>): List<CachedMovie>
     {
         return list.map { movie ->  mapFromLocal(movie) }
+    }
+
+    fun mapWebResponseToCached(webResponse: WebMoviesResponse, movieList:List<Movie> ): CachedMoviePage
+    {
+        val cachedMovies =movieList.map {
+            mapFromLocal(it)
+        }
+        return CachedMoviePage(
+            page = webResponse.page,
+            movies = cachedMovies
+        )
     }
 }

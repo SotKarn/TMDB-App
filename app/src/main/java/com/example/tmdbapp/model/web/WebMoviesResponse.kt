@@ -10,5 +10,9 @@ data class WebMoviesResponse(
 
     @SerializedName("results")
     @Expose
-    val results: List<WebMovieEntity>
+    val results: List<WebMovieEntity>,
+
+    @SerializedName("total_pages")
+    @Expose
+    val total_pages: Int
 )

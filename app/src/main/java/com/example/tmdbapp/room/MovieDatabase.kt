@@ -2,9 +2,12 @@ package com.example.tmdbapp.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.tmdbapp.model.cache.CachedMovie
+import androidx.room.TypeConverters
 
-@Database(entities = [CachedMovie::class], version = 1, exportSchema = false)
+import com.example.tmdbapp.model.cache.CachedMoviePage
+
+@Database(entities = [CachedMoviePage::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class MovieDatabase: RoomDatabase(){
     abstract fun getDao(): MoviesDao
 
