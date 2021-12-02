@@ -1,6 +1,7 @@
 package com.example.tmdbapp.viewModels
 
 import androidx.lifecycle.*
+import com.example.tmdbapp.model.cache.CachedMovie
 import com.example.tmdbapp.model.local.Movie
 import com.example.tmdbapp.repository.MyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,8 +12,8 @@ import javax.inject.Inject
 class PopularMoviesFragmentViewModel @Inject constructor(private val repo: MyRepository ) : ViewModel() {
 
 
-    private val _movieList = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>>
+    private val _movieList = MutableLiveData<List<CachedMovie>>()
+    val movies: LiveData<List<CachedMovie>>
         get() = _movieList
 
     fun setStateEvent(popularMoviesEvents: PopularMoviesEvents)
@@ -21,7 +22,7 @@ class PopularMoviesFragmentViewModel @Inject constructor(private val repo: MyRep
             when(popularMoviesEvents)
             {
                 PopularMoviesEvents.GetPopularMovies -> {
-                    val movieList: List<Movie>? = repo.getPopularMovies()
+                    val movieList: List<CachedMovie>? = repo.getPopularMovies()
                     movieList?.let {
                         _movieList.value = it
                     }

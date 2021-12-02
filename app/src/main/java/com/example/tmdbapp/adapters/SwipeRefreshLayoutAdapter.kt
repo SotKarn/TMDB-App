@@ -1,24 +1,23 @@
 package com.example.tmdbapp.adapters
 
-import android.net.Uri
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tmdbapp.R
+import com.example.tmdbapp.model.cache.CachedMovie
 import com.example.tmdbapp.model.local.Movie
-import java.net.URI
-import kotlin.coroutines.coroutineContext
+
 
 private const val IMAGE_BASE_URL: String = "https://image.tmdb.org/t/p/w500"
 
 class SwipeRefreshLayoutAdapter: RecyclerView.Adapter<SwipeRefreshLayoutAdapter.ViewHolder>()
 {
-    var movieList: MutableList<Movie>? = null
+    var movieList: MutableList<CachedMovie>? = null
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val movieTitle: TextView = itemView.findViewById(R.id.movie_title)
@@ -50,7 +49,7 @@ class SwipeRefreshLayoutAdapter: RecyclerView.Adapter<SwipeRefreshLayoutAdapter.
         } ?: return 0
     }
 
-    fun updatePosts(newList: List<Movie>?)
+    fun updatePosts(newList: List<CachedMovie>?)
     {
         newList?.let {
             if (movieList.isNullOrEmpty())

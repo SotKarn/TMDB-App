@@ -1,27 +1,45 @@
 package com.example.tmdbapp.repository
 
 
+import com.example.tmdbapp.model.cache.CachedMovie
 import com.example.tmdbapp.model.local.Movie
 import com.example.tmdbapp.model.web.WebMoviesResponse
 import com.example.tmdbapp.model.web.WebMovieEntity
 import com.example.tmdbapp.model.web.WebMovieReviews
 import com.example.tmdbapp.retrofit.IWebService
 import com.example.tmdbapp.room.MoviesDao
+import com.example.tmdbapp.utils.RoomEntityMapper
 import com.example.tmdbapp.utils.WebEntityMapper
 
 class MyRepository(
     private val webService: IWebService,
     private val dao: MoviesDao,
-    private val webIEntityMapper: WebEntityMapper
-
+    private val webIEntityMapper: WebEntityMapper,
+    private val roomEntityMapper: RoomEntityMapper
 )
 {
 
-    suspend fun getPopularMovies(): List<Movie>
+    suspend fun getPopularMovies(): List<CachedMovie>?
     {
-        val response = webService.getPopularMovies()
-        val webMovieList: List<WebMovieEntity> =  response.results
-        return webIEntityMapper.mapWebListToLocal(webMovieList)
+        // Get popular movies from api
+        val response: List<WebMovieEntity>? = webService.getPopularMovies()?.results
+
+        response?.let {
+
+            //Convert to local entities
+            val localEntityList: List<Movie> = webIEntityMapper.mapWebListToLocal(it)
+
+            //Convert to room entities
+            val roomEntityList: List<CachedMovie> = roomEntityMapper.mapLocalListToCached(localEntityList)
+
+            //Insert all elements to local storage
+
+            roomEntityList.forEach {  cachedMovie->
+                dao.insert(cachedMovie)
+            }
+
+        }
+        return dao.getAllMovies()
     }
 
     suspend fun searchMovie(query: String): WebMoviesResponse

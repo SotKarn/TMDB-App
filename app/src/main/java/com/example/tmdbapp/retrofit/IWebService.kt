@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface IWebService
 {
     @GET("movie/popular")
-    suspend fun getPopularMovies(@Query("api_key") apiKey:String = BuildConfig.API_KEY) : WebMoviesResponse
+    suspend fun getPopularMovies(@Query("api_key") apiKey:String = BuildConfig.API_KEY) : WebMoviesResponse?
 
     @GET("search/movie")
     suspend fun searchMovie(@Query("api_key") apiKey:String = BuildConfig.API_KEY, @Query("query") query:String): WebMoviesResponse

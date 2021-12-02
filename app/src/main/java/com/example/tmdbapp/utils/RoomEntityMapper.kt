@@ -2,8 +2,9 @@ package com.example.tmdbapp.utils
 
 import com.example.tmdbapp.model.cache.CachedMovie
 import com.example.tmdbapp.model.local.Movie
+import javax.inject.Inject
 
-class RoomEntityMapper: IEntityMapper<CachedMovie, Movie>
+class RoomEntityMapper @Inject constructor(): IEntityMapper<CachedMovie, Movie>
 {
     override fun mapToLocal(entity: CachedMovie): Movie{
         return Movie(
