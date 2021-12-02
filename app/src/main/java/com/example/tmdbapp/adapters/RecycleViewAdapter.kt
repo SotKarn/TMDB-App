@@ -23,7 +23,6 @@ class RecycleViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val movieTitle: TextView = itemView.findViewById(R.id.movie_title)
         val moviePoster: ImageView = itemView.findViewById(R.id.movie_poster)
-        val movieVoteAverage: TextView = itemView.findViewById(R.id.movie_vote_average)
     }
 
     inner class LoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
@@ -54,8 +53,7 @@ class RecycleViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(holder is ViewHolder)
         {
-            holder.movieTitle.text = movieList.get(position)?.title
-            holder.movieVoteAverage.text = movieList.get(position)?.vote_average.toString()
+            holder.movieTitle.text = movieList[position]?.title
 
             Glide.with(holder.moviePoster)
                 .asBitmap()
