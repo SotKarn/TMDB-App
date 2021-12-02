@@ -1,8 +1,5 @@
 package com.example.tmdbapp.views
 
-import android.content.res.Configuration
-import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,41 +24,20 @@ class PopularMoviesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[PopularMoviesFragmentViewModel::class.java]
+        viewModel = ViewModelProvider(this).get(PopularMoviesFragmentViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = PopularMoviesFragmentBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        if(newConfig.orientation == ORIENTATION_PORTRAIT)
-        {
-            binding.mRecyclerView.layoutManager = GridLayoutManager(context, 3)
-        }
-        else
-        {
-            binding.mRecyclerView.layoutManager = GridLayoutManager(context, 4)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(resources.configuration.orientation == ORIENTATION_PORTRAIT)
-        {
-            binding.mRecyclerView.layoutManager = GridLayoutManager(context, 3)
-        }
-        else
-        {
-            binding.mRecyclerView.layoutManager = GridLayoutManager(context, 4)
-        }
         initRecyclerView()
         subscribeObserver()
         viewModel.setStateEvent(PopularMoviesEvents.GetPopularMovies)
@@ -69,17 +45,40 @@ class PopularMoviesFragment : Fragment() {
 
     private fun subscribeObserver() {
         viewModel.movies.observe(this, {
+
             adapter.updatePosts(it)
             binding.swipeRefreshLayout.isRefreshing = false
+
         })
     }
 
     private fun initRecyclerView()
     {
+        binding.mRecyclerView.layoutManager = GridLayoutManager(context, 3)
         binding.mRecyclerView.adapter = adapter
         binding.mRecyclerView.setHasFixedSize(false)
     }
 
+    companion object {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private const val ARG_SECTION_NUMBER = "section_number"
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        @JvmStatic
+        fun newInstance(sectionNumber: Int): PopularMoviesFragment {
+            return PopularMoviesFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_SECTION_NUMBER, sectionNumber)
+                }
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
