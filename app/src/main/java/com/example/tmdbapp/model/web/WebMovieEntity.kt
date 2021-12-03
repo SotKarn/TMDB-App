@@ -1,30 +1,14 @@
 package com.example.tmdbapp.model.web
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class WebMovieEntity(
-    @SerializedName("id")
-    @Expose
     val id: Int,
-
-    @SerializedName("title")
-    @Expose
     val title: String,
-
-    @SerializedName("overview")
-    @Expose
     val overview: String,
-
-    @SerializedName("release_date")
-    @Expose
     val release_date: String,
-
-    @SerializedName("vote_average")
-    @Expose
     val vote_average: Float,
-
-    @SerializedName("poster_path")
-    @Expose
-    val poster_path: String
-)
+    val poster_path: String,
+): Parcelable

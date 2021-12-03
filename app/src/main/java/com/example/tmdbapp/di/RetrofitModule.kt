@@ -1,8 +1,6 @@
 package com.example.tmdbapp.di
 
 import com.example.tmdbapp.retrofit.IWebService
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,17 +17,9 @@ object RetrofitModule
 
     @Singleton
     @Provides
-    fun providesGson(): Gson {
-        return GsonBuilder()
-            .excludeFieldsWithoutExposeAnnotation()
-            .create()
-    }
-
-    @Singleton
-    @Provides
-    fun providesRetrofit(gson: Gson): Retrofit.Builder {
+    fun providesRetrofit(): Retrofit.Builder {
         return Retrofit.Builder()
-                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .addConverterFactory(GsonConverterFactory.create())
                         .baseUrl(BASE_URL)
     }
 

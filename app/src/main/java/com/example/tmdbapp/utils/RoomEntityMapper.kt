@@ -35,14 +35,14 @@ class RoomEntityMapper @Inject constructor(): IEntityMapper<CachedMovie, Movie>
         return list.map { movie ->  mapFromLocal(movie) }
     }
 
-    fun mapWebResponseToCached(webResponse: WebMoviesResponse, movieList:List<Movie> ): CachedMoviePage
-    {
-        val cachedMovies =movieList.map {
-            mapFromLocal(it)
-        }
-        return CachedMoviePage(
-            page = webResponse.page,
-            movies = cachedMovies
-        )
-    }
+//    fun mapWebResponseToCached(webResponse: WebMoviesResponse, movieList:List<Movie> ): CachedMoviePage
+//    {
+//        val cachedMovies =movieList.map {
+//            mapFromLocal(it)
+//        }
+//        return CachedMoviePage(
+//            page = webResponse.page,
+//            movies = cachedMovies
+//        )
+//    }
 }
