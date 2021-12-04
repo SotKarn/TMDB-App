@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tmdbapp.R
-import com.example.tmdbapp.model.web.WebMovieEntity
+import com.example.tmdbapp.model.web.MovieEntity
 
 
 private const val IMAGE_BASE_URL: String = "https://image.tmdb.org/t/p/w500"
 
 
-class RecycleViewAdapter: PagingDataAdapter<WebMovieEntity, RecycleViewAdapter.ViewHolder>(PHOTO_COMPARATOR)
+class RecycleViewAdapter: PagingDataAdapter<MovieEntity, RecycleViewAdapter.ViewHolder>(PHOTO_COMPARATOR)
 {
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -26,9 +26,9 @@ class RecycleViewAdapter: PagingDataAdapter<WebMovieEntity, RecycleViewAdapter.V
     }
 
     companion object{
-        private val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<WebMovieEntity>(){
-            override fun areItemsTheSame(oldItem: WebMovieEntity, newItem: WebMovieEntity): Boolean = oldItem.id == newItem.id
-            override fun areContentsTheSame(oldItem: WebMovieEntity, newItem: WebMovieEntity): Boolean = oldItem == newItem
+        private val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<MovieEntity>(){
+            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean = oldItem.id == newItem.id
+            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean = oldItem == newItem
         }
     }
 

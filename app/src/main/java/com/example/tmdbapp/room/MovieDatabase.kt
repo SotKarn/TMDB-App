@@ -2,14 +2,13 @@ package com.example.tmdbapp.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import com.example.tmdbapp.model.cache.MovieRemoteKey
+import com.example.tmdbapp.model.web.MovieEntity
 
-import com.example.tmdbapp.model.cache.CachedMoviePage
-
-@Database(entities = [CachedMoviePage::class], version = 1, exportSchema = false)
-@TypeConverters(Converters::class)
+@Database(entities = [MovieEntity::class, MovieRemoteKey::class], version = 1, exportSchema = false)
 abstract class MovieDatabase: RoomDatabase(){
     abstract fun getDao(): MoviesDao
+    abstract fun getRemoteKeysDao(): RemoteKeysDao
 
     companion object {
         const val DATABASE_NAME: String = "movies_db"

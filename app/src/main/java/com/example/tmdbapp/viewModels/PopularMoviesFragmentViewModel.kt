@@ -1,9 +1,10 @@
 package com.example.tmdbapp.viewModels
 
 import androidx.lifecycle.*
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.tmdbapp.model.web.WebMovieEntity
+import com.example.tmdbapp.model.web.MovieEntity
 import com.example.tmdbapp.repository.MyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -17,16 +18,22 @@ class PopularMoviesFragmentViewModel @Inject constructor(
     private val repo: MyRepository
 ): ViewModel() {
 
-    private val _movieList = MutableLiveData<PagingData<WebMovieEntity>>()
-    val movies: LiveData<PagingData<WebMovieEntity>>
+    private val _movieList = MutableLiveData<PagingData<MovieEntity>>()
+    val movies: LiveData<PagingData<MovieEntity>>
         get() = _movieList
 
+    @ExperimentalPagingApi
     fun setStateEvent(popularMoviesEvents: PopularMoviesEvents)
     {
-        viewModelScope.launch {
-            repo.getPopularMovies().cachedIn(viewModelScope).onEach {
-                _movieList.value = it
-            }.launchIn(viewModelScope)
+        when(popularMoviesEvents){
+            PopularMoviesEvents.GetMovieInfo -> {
+                viewModelScope.launch {
+                    repo.getPopularMovies().cachedIn(viewModelScope).onEach {
+                        _movieList.value = it
+                    }.launchIn(viewModelScope)
+                }
+            }
+            PopularMoviesEvents.GetPopularMovies -> TODO()
         }
     }
 }

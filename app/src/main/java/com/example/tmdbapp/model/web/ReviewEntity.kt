@@ -3,7 +3,7 @@ package com.example.tmdbapp.model.web
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class WebReview(
+data class ReviewEntity(
 
     @SerializedName("id")
     @Expose

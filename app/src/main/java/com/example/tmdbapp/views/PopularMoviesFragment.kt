@@ -6,16 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tmdbapp.adapters.RecycleViewAdapter
 import com.example.tmdbapp.databinding.PopularMoviesFragmentBinding
 import com.example.tmdbapp.viewModels.PopularMoviesEvents
 import com.example.tmdbapp.viewModels.PopularMoviesFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class PopularMoviesFragment : Fragment() {
-
 
     private val viewModel  by viewModels<PopularMoviesFragmentViewModel>()
     private var _binding: PopularMoviesFragmentBinding? = null
@@ -31,12 +34,13 @@ class PopularMoviesFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         subscribeObserver()
         if (savedInstanceState == null)
-            loadFirstPage()
+            fetchItems()
     }
 
     override fun onDestroyView() {
@@ -47,22 +51,24 @@ class PopularMoviesFragment : Fragment() {
 
     private fun subscribeObserver()
     {
+        lifecycleScope.launch{
             viewModel.movies.observe(viewLifecycleOwner, {
                 it?.let {
                     adapter.submitData(viewLifecycleOwner.lifecycle, it)
                 }
             })
+        }
     }
 
     private fun initRecyclerView()
     {
         binding.mRecyclerView.layoutManager = GridLayoutManager(context, 3)
-
         binding.mRecyclerView.adapter = adapter
         binding.mRecyclerView.setHasFixedSize(false)
     }
 
-    private fun loadFirstPage()
+    @ExperimentalPagingApi
+    private fun fetchItems()
     {
         viewModel.setStateEvent(PopularMoviesEvents.GetPopularMovies)
     }
