@@ -1,9 +1,9 @@
-package com.example.tmdbapp.model.web
+package com.example.tmdbapp.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class ReviewEntity(
+data class MovieReviewEntity(
 
     @SerializedName("id")
     @Expose

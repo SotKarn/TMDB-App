@@ -5,15 +5,15 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.example.tmdbapp.model.cache.MovieRemoteKey
-import com.example.tmdbapp.model.web.MovieEntity
+import com.example.tmdbapp.model.MovieRemoteKey
+import com.example.tmdbapp.model.MovieEntity
 import com.example.tmdbapp.retrofit.IWebService
 import com.example.tmdbapp.room.MovieDatabase
 import retrofit2.HttpException
 import java.io.IOException
 
 @ExperimentalPagingApi
-class MyRemoteMediator(
+class PopularMoviesRemoteMediator(
     private val database: MovieDatabase,
     private val webService: IWebService
 ): RemoteMediator<Int, MovieEntity>()

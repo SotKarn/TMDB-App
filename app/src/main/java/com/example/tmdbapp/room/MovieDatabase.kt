@@ -2,8 +2,8 @@ package com.example.tmdbapp.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.tmdbapp.model.cache.MovieRemoteKey
-import com.example.tmdbapp.model.web.MovieEntity
+import com.example.tmdbapp.model.MovieRemoteKey
+import com.example.tmdbapp.model.MovieEntity
 
 @Database(entities = [MovieEntity::class, MovieRemoteKey::class], version = 1, exportSchema = false)
 abstract class MovieDatabase: RoomDatabase(){

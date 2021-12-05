@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tmdbapp.adapters.RecycleViewAdapter
 import com.example.tmdbapp.databinding.PopularMoviesFragmentBinding
 import com.example.tmdbapp.viewModels.PopularMoviesEvents
 import com.example.tmdbapp.viewModels.PopularMoviesFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+
 
 @ExperimentalPagingApi
 @AndroidEntryPoint
@@ -31,33 +32,63 @@ class PopularMoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = PopularMoviesFragmentBinding.inflate(inflater, container, false)
+        subscribeObserver()
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        subscribeObserver()
+
         if (savedInstanceState == null)
-            fetchItems()
+        {
+           viewModel.setStateEvent(PopularMoviesEvents.GetPopularMovies, null)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    if (it.isNotBlank())
+                    {
+                        adapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
+                        viewModel.setStateEvent(PopularMoviesEvents.SearchMovies, it)
+                    }
+                    else viewModel.setStateEvent(PopularMoviesEvents.GetPopularMovies, null)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean
+            {
+                newText?.let {
+                    if (it.isNotBlank())
+                    {
+                        adapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
+                        viewModel.setStateEvent(PopularMoviesEvents.SearchMovies, it)
+                    }
+                    else viewModel.setStateEvent(PopularMoviesEvents.GetPopularMovies, null)
+                }
+                return false
+            }
+        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.movies.removeObservers(this)
         _binding = null
     }
 
     private fun subscribeObserver()
     {
-        lifecycleScope.launch{
-            viewModel.movies.observe(viewLifecycleOwner, {
-                it?.let {
-                    adapter.submitData(viewLifecycleOwner.lifecycle, it)
-                }
-            })
-        }
+        viewModel.movies.observe(viewLifecycleOwner, {
+               it?.let {
+                  adapter.submitData(viewLifecycleOwner.lifecycle, it)
+               }
+        })
+
     }
 
     private fun initRecyclerView()
@@ -67,9 +98,4 @@ class PopularMoviesFragment : Fragment() {
         binding.mRecyclerView.setHasFixedSize(false)
     }
 
-    @ExperimentalPagingApi
-    private fun fetchItems()
-    {
-        viewModel.setStateEvent(PopularMoviesEvents.GetPopularMovies)
-    }
 }

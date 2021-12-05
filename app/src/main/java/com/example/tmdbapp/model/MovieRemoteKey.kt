@@ -1,4 +1,4 @@
-package com.example.tmdbapp.model.cache
+package com.example.tmdbapp.model
 
 
 import androidx.room.Entity

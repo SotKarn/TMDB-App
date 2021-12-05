@@ -1,13 +1,17 @@
-package com.example.tmdbapp.model.cache
+package com.example.tmdbapp.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "movies")
-data class CachedMovie(
+data class MovieEntity(
+    @PrimaryKey(autoGenerate = true)
+    val customID: Int = 0,
 
-    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     val id: Int,
 
@@ -25,4 +29,4 @@ data class CachedMovie(
 
     @ColumnInfo(name = "poster_path")
     val poster_path: String
-)
+): Parcelable
