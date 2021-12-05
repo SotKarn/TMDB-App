@@ -26,14 +26,14 @@ class PopularMoviesFragmentViewModel @Inject constructor(
     fun setStateEvent(popularMoviesEvents: PopularMoviesEvents)
     {
         when(popularMoviesEvents){
-            PopularMoviesEvents.GetMovieInfo -> {
+            PopularMoviesEvents.GetPopularMovies -> {
                 viewModelScope.launch {
                     repo.getPopularMovies().cachedIn(viewModelScope).onEach {
                         _movieList.value = it
                     }.launchIn(viewModelScope)
                 }
             }
-            PopularMoviesEvents.GetPopularMovies -> TODO()
+            PopularMoviesEvents.GetMovieInfo -> {}
         }
     }
 }

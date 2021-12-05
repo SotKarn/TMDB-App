@@ -9,7 +9,6 @@ import com.example.tmdbapp.retrofit.IWebService
 import com.example.tmdbapp.room.MovieDatabase
 import kotlinx.coroutines.flow.*
 
-private const val TAG = "test"
 class MyRepository(
     private val webService: IWebService,
     private val movieDatabase: MovieDatabase

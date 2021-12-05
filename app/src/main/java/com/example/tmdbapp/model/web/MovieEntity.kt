@@ -9,7 +9,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "movies")
 data class MovieEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    val customID: Int = 0,
+
     @ColumnInfo(name = "id")
     val id: Int,
 

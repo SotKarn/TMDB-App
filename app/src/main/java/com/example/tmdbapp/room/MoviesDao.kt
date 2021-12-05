@@ -8,8 +8,6 @@ import com.example.tmdbapp.model.web.MovieEntity
 
 @Dao
 interface MoviesDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovie(movieEntity: MovieEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListMovies(list: List<MovieEntity>)
