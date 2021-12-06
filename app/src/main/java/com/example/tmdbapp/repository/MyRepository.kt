@@ -50,4 +50,8 @@ class MyRepository(
     suspend fun getSimilarMovies(id: Int): MoviesResponse {
         return webService.getSimilarMovies(movieId = id)
     }
+
+    companion object{
+        const val IMAGE_BASE_URL: String = "https://image.tmdb.org/t/p/w500"
+    }
 }

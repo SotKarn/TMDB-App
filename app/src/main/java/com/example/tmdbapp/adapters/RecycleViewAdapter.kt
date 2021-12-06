@@ -16,9 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.tmdbapp.R
 import com.example.tmdbapp.databinding.ListItemBinding
 import com.example.tmdbapp.model.MovieEntity
-
-
-private const val IMAGE_BASE_URL: String = "https://image.tmdb.org/t/p/w500"
+import com.example.tmdbapp.repository.MyRepository.Companion.IMAGE_BASE_URL
 
 
 class RecycleViewAdapter: PagingDataAdapter<MovieEntity, RecycleViewAdapter.ViewHolder>(PHOTO_COMPARATOR) {
@@ -41,6 +39,7 @@ class RecycleViewAdapter: PagingDataAdapter<MovieEntity, RecycleViewAdapter.View
                     val movieBundle = Bundle()
                     movieBundle.putParcelable("movie", this)
                     it.findNavController().navigate(R.id.action_popularMoviesFragment_to_movieDetailsFragment, movieBundle)
+
                 }
             }
         }

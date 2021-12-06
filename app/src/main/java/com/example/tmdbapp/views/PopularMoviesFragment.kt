@@ -76,6 +76,13 @@ class PopularMoviesFragment : Fragment() {
         })
     }
 
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
