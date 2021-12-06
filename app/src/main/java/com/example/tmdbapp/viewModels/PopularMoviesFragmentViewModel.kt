@@ -1,10 +1,8 @@
 package com.example.tmdbapp.viewModels
 
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import androidx.paging.cachedIn
 import com.example.tmdbapp.model.MovieEntity
 import com.example.tmdbapp.repository.MyRepository
@@ -15,7 +13,6 @@ import kotlinx.coroutines.launch
 
 import javax.inject.Inject
 
-private const val TAG = "PopularMoviesFragmentVi"
 @HiltViewModel
 class PopularMoviesFragmentViewModel @Inject constructor(
     private val repo: MyRepository,
