@@ -22,7 +22,6 @@ class PopularMoviesFragmentViewModel @Inject constructor(
     private val stateHandle: SavedStateHandle
 ): ViewModel() {
 
-    
     private val _movieList = MutableLiveData<PagingData<MovieEntity>>()
     val movies: LiveData<PagingData<MovieEntity>>
         get() = _movieList
@@ -46,6 +45,8 @@ class PopularMoviesFragmentViewModel @Inject constructor(
             }
         }
     }
+
+
 }
 
 sealed class MoviesEvents{

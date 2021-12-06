@@ -1,5 +1,6 @@
 package com.example.tmdbapp.views
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,7 +41,7 @@ class PopularMoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
 
-        if (savedInstanceState == null)
+        if (viewModel.movies.value == null)
         {
            viewModel.setStateEvent(MoviesEvents.GetPopularMovies, null)
         }
@@ -76,13 +77,6 @@ class PopularMoviesFragment : Fragment() {
         })
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
