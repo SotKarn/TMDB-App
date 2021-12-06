@@ -1,18 +1,18 @@
 package com.example.tmdbapp.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.PagingData
+import androidx.paging.*
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tmdbapp.adapters.RecycleViewAdapter
 import com.example.tmdbapp.databinding.PopularMoviesFragmentBinding
-import com.example.tmdbapp.viewModels.PopularMoviesEvents
+import com.example.tmdbapp.viewModels.MoviesEvents
 import com.example.tmdbapp.viewModels.PopularMoviesFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,7 +42,7 @@ class PopularMoviesFragment : Fragment() {
 
         if (savedInstanceState == null)
         {
-           viewModel.setStateEvent(PopularMoviesEvents.GetPopularMovies, null)
+           viewModel.setStateEvent(MoviesEvents.GetPopularMovies, null)
         }
     }
 
@@ -54,9 +54,9 @@ class PopularMoviesFragment : Fragment() {
                     if (it.isNotBlank())
                     {
                         adapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
-                        viewModel.setStateEvent(PopularMoviesEvents.SearchMovies, it)
+                        viewModel.setStateEvent(MoviesEvents.SearchMovies, it)
                     }
-                    else viewModel.setStateEvent(PopularMoviesEvents.GetPopularMovies, null)
+                    else viewModel.setStateEvent(MoviesEvents.GetPopularMovies, null)
                 }
                 return false
             }
@@ -67,9 +67,9 @@ class PopularMoviesFragment : Fragment() {
                     if (it.isNotBlank())
                     {
                         adapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
-                        viewModel.setStateEvent(PopularMoviesEvents.SearchMovies, it)
+                        viewModel.setStateEvent(MoviesEvents.SearchMovies, it)
                     }
-                    else viewModel.setStateEvent(PopularMoviesEvents.GetPopularMovies, null)
+                    else viewModel.setStateEvent(MoviesEvents.GetPopularMovies, null)
                 }
                 return false
             }
@@ -84,9 +84,7 @@ class PopularMoviesFragment : Fragment() {
     private fun subscribeObserver()
     {
         viewModel.movies.observe(viewLifecycleOwner, {
-               it?.let {
-                  adapter.submitData(viewLifecycleOwner.lifecycle, it)
-               }
+            adapter.submitData(viewLifecycleOwner.lifecycle, it)
         })
 
     }

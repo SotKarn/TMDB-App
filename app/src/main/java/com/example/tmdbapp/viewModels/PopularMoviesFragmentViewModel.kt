@@ -1,8 +1,10 @@
 package com.example.tmdbapp.viewModels
 
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import androidx.paging.cachedIn
 import com.example.tmdbapp.model.MovieEntity
 import com.example.tmdbapp.repository.MyRepository
@@ -13,29 +15,31 @@ import kotlinx.coroutines.launch
 
 import javax.inject.Inject
 
+private const val TAG = "PopularMoviesFragmentVi"
 @HiltViewModel
 class PopularMoviesFragmentViewModel @Inject constructor(
     private val repo: MyRepository,
     private val stateHandle: SavedStateHandle
 ): ViewModel() {
 
+    
     private val _movieList = MutableLiveData<PagingData<MovieEntity>>()
     val movies: LiveData<PagingData<MovieEntity>>
         get() = _movieList
 
     @ExperimentalPagingApi
-    fun setStateEvent(popularMoviesEvents: PopularMoviesEvents, query:String?)
+    fun setStateEvent(popularMoviesEvents: MoviesEvents, query:String?)
     {
         when(popularMoviesEvents){
-            PopularMoviesEvents.GetPopularMovies -> {
+            MoviesEvents.GetPopularMovies -> {
                 viewModelScope.launch {
                     repo.getPopularMovies().cachedIn(viewModelScope).onEach {
                         _movieList.value = it
                     }.launchIn(viewModelScope)
                 }
             }
-            PopularMoviesEvents.GetMovieInfo -> {}
-            PopularMoviesEvents.SearchMovies -> {
+            MoviesEvents.GetMovieInfo -> {}
+            MoviesEvents.SearchMovies -> {
                 repo.searchMovie(query).cachedIn(viewModelScope).onEach {
                     _movieList.value = it
                 }.launchIn(viewModelScope)
@@ -44,9 +48,9 @@ class PopularMoviesFragmentViewModel @Inject constructor(
     }
 }
 
-sealed class PopularMoviesEvents{
-    object GetPopularMovies: PopularMoviesEvents()
-    object GetMovieInfo: PopularMoviesEvents()
-    object SearchMovies: PopularMoviesEvents()
+sealed class MoviesEvents{
+    object GetPopularMovies: MoviesEvents()
+    object GetMovieInfo: MoviesEvents()
+    object SearchMovies: MoviesEvents()
 }
 

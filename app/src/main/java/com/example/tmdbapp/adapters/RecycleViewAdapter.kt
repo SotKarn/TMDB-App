@@ -10,6 +10,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.tmdbapp.R
 import com.example.tmdbapp.model.MovieEntity
 
@@ -47,8 +48,10 @@ class RecycleViewAdapter: PagingDataAdapter<MovieEntity, RecycleViewAdapter.View
             holder.movieTitle.text = title
 
             Glide.with(holder.moviePoster)
-                .asBitmap()
                 .load(IMAGE_BASE_URL + poster_path)
+                .centerCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .error(android.R.drawable.ic_menu_close_clear_cancel)
                 .into(holder.moviePoster)
         }
     }
