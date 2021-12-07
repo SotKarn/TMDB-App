@@ -13,7 +13,7 @@ interface MoviesInfoDao {
     suspend fun insertMovieInfo(movieInfo: MovieInfo)
 
     @Query("SELECT * FROM movies_info WHERE id= :id")
-    fun getMovieInfo(id:Int): MovieInfo
+    suspend fun getMovieInfo(id:Int): MovieInfo?
 
     @Query("DELETE FROM movies_info")
     suspend fun deleteAll()

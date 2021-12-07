@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.tmdbapp.model.MovieInfo
 import com.example.tmdbapp.repository.MyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +24,9 @@ class MovieDetailsViewModel @Inject constructor(
     fun getMovieInfo(id: Int)
     {
         viewModelScope.launch {
-            _movieInfo.value = repo.getMovieInfo(id)
+             repo.getMovieInfo(id).onEach {
+                 _movieInfo.value = it
+             }.launchIn(viewModelScope)
         }
     }
 }

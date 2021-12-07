@@ -12,7 +12,7 @@ import com.example.tmdbapp.model.MovieInfo
 abstract class MovieDatabase: RoomDatabase(){
     abstract fun getDao(): MoviesDao
     abstract fun getRemoteKeysDao(): RemoteKeysDao
-    abstract fun getMoviesInfo(): MoviesInfoDao
+    abstract fun getMoviesInfoDao(): MoviesInfoDao
 
     companion object {
         const val DATABASE_NAME: String = "movies_db"

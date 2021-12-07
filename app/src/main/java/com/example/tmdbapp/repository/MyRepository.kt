@@ -40,9 +40,19 @@ class MyRepository(
         ).flow
     }
 
-    suspend fun getMovieInfo(id: Int): MovieInfo {
-        return webService.getMovieInfo(movieId = id)
+    fun getMovieInfo(id: Int): Flow<MovieInfo> = flow {
+
+        val cachedMovieInfo: MovieInfo? = movieDatabase.getMoviesInfoDao().getMovieInfo(id)
+
+        cachedMovieInfo?.let {
+            emit(it)
+        } ?: kotlin.run{
+            val apiMovieInfo = webService.getMovieInfo(movieId = id)
+            movieDatabase.getMoviesInfoDao().insertMovieInfo(apiMovieInfo)
+            emit(apiMovieInfo)
+        }
     }
+
 
     suspend fun getMovieReviews(id: Int): MovieReviews {
         return webService.getMovieReviews(movieId = id)
