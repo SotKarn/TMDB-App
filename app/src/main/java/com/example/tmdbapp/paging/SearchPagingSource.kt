@@ -16,8 +16,7 @@ class SearchPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieEntity> {
         val position:Int = params.key?: 1
         return try {
-            val apiResponse = webService.searchMovie(query = query, page = position)
-            val movies = apiResponse.results
+            val movies = webService.searchMovie(query = query, page = position).results
 
             LoadResult.Page(
                 data = movies,

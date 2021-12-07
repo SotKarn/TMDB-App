@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TMDB</string>
+    <string name="details_label_overview">Overview\u0020</string>
+    <string name="details_label_vote">Vote:\u0020</string>
+    <string name="details_label_release_date">Release Date:\u0020</string>
+    <string name="details_label_cast_crew">Cast / Crew</string>
 </resources>

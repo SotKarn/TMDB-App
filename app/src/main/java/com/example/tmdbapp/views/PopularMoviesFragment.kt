@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.paging.*
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.tmdbapp.adapters.MovieLoaderStateAdapter
 import com.example.tmdbapp.adapters.RecycleViewAdapter
 import com.example.tmdbapp.databinding.PopularMoviesFragmentBinding
 import com.example.tmdbapp.viewModels.MoviesEvents
@@ -41,9 +40,10 @@ class PopularMoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
 
-        if (savedInstanceState == null)
-            viewModel.setStateEvent(MoviesEvents.GetPopularMovies, null)
-
+        if (viewModel.movies.value == null)
+        {
+           viewModel.setStateEvent(MoviesEvents.GetPopularMovies, null)
+        }
     }
 
     override fun onResume() {
@@ -92,11 +92,7 @@ class PopularMoviesFragment : Fragment() {
     private fun initRecyclerView()
     {
         binding.mRecyclerView.layoutManager = GridLayoutManager(context, 3)
-        binding.mRecyclerView.adapter = adapter.withLoadStateHeaderAndFooter(
-            header = MovieLoaderStateAdapter { adapter.retry()},
-            footer = MovieLoaderStateAdapter { adapter.retry()},
-
-        )
+        binding.mRecyclerView.adapter = adapter
         binding.mRecyclerView.setHasFixedSize(false)
     }
 

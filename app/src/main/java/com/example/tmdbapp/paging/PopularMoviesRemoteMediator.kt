@@ -50,9 +50,8 @@ class PopularMoviesRemoteMediator(
         }
 
         try {
-            val apiResponse = webService.getPopularMovies(page = page)
+            val movies = webService.getPopularMovies(page = page).results
 
-            val movies = apiResponse.results
             val endOfPaginationReached = movies.isEmpty()
             database.withTransaction {
                 // clear all tables in the database
