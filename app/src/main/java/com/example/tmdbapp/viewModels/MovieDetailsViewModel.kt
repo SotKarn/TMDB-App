@@ -24,7 +24,5 @@ class MovieDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             _movieInfo.value = repo.getMovieInfo(id)
         }
-
     }
-
 }
