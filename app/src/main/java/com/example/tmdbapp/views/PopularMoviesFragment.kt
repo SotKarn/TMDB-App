@@ -1,7 +1,7 @@
 package com.example.tmdbapp.views
 
+import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,7 +91,9 @@ class PopularMoviesFragment : Fragment() {
 
     private fun initRecyclerView()
     {
-        binding.mRecyclerView.layoutManager = GridLayoutManager(context, 3)
+
+        binding.mRecyclerView.layoutManager = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) GridLayoutManager(context, 5)
+                                              else GridLayoutManager(context, 3)
         binding.mRecyclerView.adapter = adapter
         binding.mRecyclerView.setHasFixedSize(false)
     }
