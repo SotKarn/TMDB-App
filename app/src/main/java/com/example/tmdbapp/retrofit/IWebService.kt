@@ -1,9 +1,10 @@
 package com.example.tmdbapp.retrofit
 
 import com.example.tmdbapp.BuildConfig
-import com.example.tmdbapp.model.MoviesResponse
 import com.example.tmdbapp.model.MovieEntity
+import com.example.tmdbapp.model.MovieInfo
 import com.example.tmdbapp.model.MovieReviews
+import com.example.tmdbapp.model.MoviesResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -18,7 +19,7 @@ interface IWebService
     suspend fun searchMovie(@Query("api_key") apiKey:String = BuildConfig.API_KEY, @Query("query") query:String?, @Query("page") page:Int?) : MoviesResponse
 
     @GET("movie/{movie_id}?append_to_response=credits")
-    suspend fun getMovieInfo(@Path("movie_id") movieId: Int, @Query("api_key") apiKey:String = BuildConfig.API_KEY): MovieEntity
+    suspend fun getMovieInfo(@Path("movie_id") movieId: Int, @Query("api_key") apiKey:String = BuildConfig.API_KEY): MovieInfo
 
     @GET("movie/{movie_id}/reviews")
     suspend fun getMovieReviews(@Path("movie_id") movieId: Int, @Query("api_key") apiKey:String = BuildConfig.API_KEY): MovieReviews

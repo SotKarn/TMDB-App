@@ -1,9 +1,10 @@
 package com.example.tmdbapp.repository
 
 import androidx.paging.*
-import com.example.tmdbapp.model.MoviesResponse
 import com.example.tmdbapp.model.MovieEntity
+import com.example.tmdbapp.model.MovieInfo
 import com.example.tmdbapp.model.MovieReviews
+import com.example.tmdbapp.model.MoviesResponse
 import com.example.tmdbapp.paging.PopularMoviesRemoteMediator
 import com.example.tmdbapp.paging.SearchPagingSource
 import com.example.tmdbapp.retrofit.IWebService
@@ -39,7 +40,7 @@ class MyRepository(
         ).flow
     }
 
-    suspend fun getMovieInfo(id: Int): MovieEntity {
+    suspend fun getMovieInfo(id: Int): MovieInfo {
         return webService.getMovieInfo(movieId = id)
     }
 
