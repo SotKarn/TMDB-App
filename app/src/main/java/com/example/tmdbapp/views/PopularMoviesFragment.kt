@@ -50,15 +50,7 @@ class PopularMoviesFragment : Fragment() {
         super.onResume()
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    if (it.isNotBlank())
-                    {
-                        adapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
-                        viewModel.setStateEvent(MoviesEvents.SearchMovies, it)
-                    }
-                    else viewModel.setStateEvent(MoviesEvents.GetPopularMovies, null)
-                }
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean
@@ -86,16 +78,13 @@ class PopularMoviesFragment : Fragment() {
         viewModel.movies.observe(viewLifecycleOwner, {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
         })
-
     }
 
     private fun initRecyclerView()
     {
-
         binding.mRecyclerView.layoutManager = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) GridLayoutManager(context, 5)
                                               else GridLayoutManager(context, 3)
         binding.mRecyclerView.adapter = adapter
         binding.mRecyclerView.setHasFixedSize(false)
     }
-
 }
