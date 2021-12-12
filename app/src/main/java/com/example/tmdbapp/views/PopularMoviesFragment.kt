@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.paging.*
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.tmdbapp.adapters.MovieLoaderStateAdapter
 import com.example.tmdbapp.adapters.RecycleViewAdapter
 import com.example.tmdbapp.databinding.PopularMoviesFragmentBinding
 import com.example.tmdbapp.viewModels.MoviesEvents
@@ -67,10 +68,15 @@ class PopularMoviesFragment : Fragment() {
             }
         })
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun initRecyclerView()
+    {
+        binding.mRecyclerView.layoutManager = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) GridLayoutManager(context, 5)
+        else GridLayoutManager(context, 3)
+        binding.mRecyclerView.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = MovieLoaderStateAdapter{adapter.retry()},
+            footer = MovieLoaderStateAdapter{ adapter.retry()}
+        )
+        binding.mRecyclerView.setHasFixedSize(false)
     }
 
     private fun subscribeObserver()
@@ -80,11 +86,8 @@ class PopularMoviesFragment : Fragment() {
         })
     }
 
-    private fun initRecyclerView()
-    {
-        binding.mRecyclerView.layoutManager = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) GridLayoutManager(context, 5)
-                                              else GridLayoutManager(context, 3)
-        binding.mRecyclerView.adapter = adapter
-        binding.mRecyclerView.setHasFixedSize(false)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

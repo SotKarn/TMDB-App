@@ -4,4 +4,5 @@
     <string name="details_label_vote">Vote:\u0020</string>
     <string name="details_label_release_date">Release Date:\u0020</string>
     <string name="details_label_cast_crew">Cast / Crew</string>
+    <string name="details_label_similar_movies">Similar Movies</string>
 </resources>

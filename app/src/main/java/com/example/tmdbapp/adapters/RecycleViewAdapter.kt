@@ -3,10 +3,7 @@ package com.example.tmdbapp.adapters
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -16,7 +13,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.tmdbapp.R
 import com.example.tmdbapp.databinding.ListItemBinding
 import com.example.tmdbapp.model.MovieEntity
-import com.example.tmdbapp.repository.MyRepository.Companion.IMAGE_BASE_URL
+import com.example.tmdbapp.retrofit.IWebService.Companion.IMAGE_BASE_URL
 
 
 class RecycleViewAdapter: PagingDataAdapter<MovieEntity, RecycleViewAdapter.ViewHolder>(PHOTO_COMPARATOR) {
@@ -46,14 +43,12 @@ class RecycleViewAdapter: PagingDataAdapter<MovieEntity, RecycleViewAdapter.View
 
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecycleViewAdapter.ViewHolder, position: Int) {
-
         val currentItem = getItem(position)
         currentItem?.let{
             holder.bind(it)

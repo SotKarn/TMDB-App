@@ -15,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PopularMoviesFragmentViewModel @Inject constructor(
-    private val repo: MyRepository,
-    private val stateHandle: SavedStateHandle
+    private val repo: MyRepository
 ): ViewModel() {
 
     private val _movieList = MutableLiveData<PagingData<MovieEntity>>()
@@ -34,7 +33,6 @@ class PopularMoviesFragmentViewModel @Inject constructor(
                     }.launchIn(viewModelScope)
                 }
             }
-            MoviesEvents.GetMovieInfo -> {}
             MoviesEvents.SearchMovies -> {
                 repo.searchMovie(query).cachedIn(viewModelScope).onEach {
                     _movieList.value = it
@@ -42,13 +40,10 @@ class PopularMoviesFragmentViewModel @Inject constructor(
             }
         }
     }
-
-
 }
 
 sealed class MoviesEvents{
     object GetPopularMovies: MoviesEvents()
-    object GetMovieInfo: MoviesEvents()
     object SearchMovies: MoviesEvents()
 }
 

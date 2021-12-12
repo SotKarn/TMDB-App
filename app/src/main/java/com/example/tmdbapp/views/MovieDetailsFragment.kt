@@ -13,15 +13,17 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.ExperimentalPagingApi
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.tmdbapp.databinding.MovieDetailsFragmentBinding
 import com.example.tmdbapp.model.MovieEntity
 import com.example.tmdbapp.model.MovieInfo
-import com.example.tmdbapp.repository.MyRepository.Companion.IMAGE_BASE_URL
+import com.example.tmdbapp.retrofit.IWebService.Companion.IMAGE_BASE_URL
 import com.example.tmdbapp.viewModels.MovieDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
 
@@ -49,7 +51,6 @@ class MovieDetailsFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             viewModel.movieInfo.observe(viewLifecycleOwner, { movieInfo->
 
-
                 Glide.with(binding.detailsImage)
                      .load(IMAGE_BASE_URL + movieInfo.poster_path)
                      .transition(DrawableTransitionOptions.withCrossFade())
@@ -68,10 +69,14 @@ class MovieDetailsFragment : Fragment() {
                 }
 
                 //Add Cast CardViews
-                addCastCardViews(movieInfo.credits.cast)
+                addCastCardViews(movieInfo.credits.cast, binding.castLinearLayout)
 
             })
         }
+
+        viewModel.similarMovies.observe(viewLifecycleOwner, {
+            addCastCardViews(it, binding.similarMoviesLinearLayout)
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,65 +102,109 @@ class MovieDetailsFragment : Fragment() {
         return genreString
     }
 
-    private fun addCastCardViews(castList: List<MovieInfo.Credits.Cast>)
+
+    private fun <T> addCastCardViews(list: List<T>, container: LinearLayout)
     {
-        val linearLayoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        linearLayoutParams.setMargins(20,20,20, 20)
-
-        val cardNameLayoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        cardNameLayoutParams.setMargins(20,0, 0 ,0)
-
-        val imageViewLayoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT)
-
-        val cardViewLayoutParams = LinearLayout.LayoutParams(150, 200)
-
-
-        castList.forEach { cast->
-
-            val linearLayout = LinearLayout(context!!)
-            linearLayout.orientation = LinearLayout.HORIZONTAL
-            linearLayout.layoutParams = linearLayoutParams
-
-            val cardView = CardView(context!!)
-            cardView.radius = 20F
-            cardView.elevation = 8F
-            cardView.layoutParams = cardViewLayoutParams
-
-            val imageView = ImageView(context!!)
-            imageView.scaleType = ImageView.ScaleType.FIT_XY
-            imageView.layoutParams = imageViewLayoutParams
-            Glide.with(imageView)
-                .load(IMAGE_BASE_URL + cast.profile_path)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .error(android.R.drawable.ic_menu_close_clear_cancel)
-                .into(imageView)
-
-            val castName = TextView(context!!)
-            castName.layoutParams = cardNameLayoutParams
-            castName.width = 200
-            castName.setTextColor(Color.WHITE)
-            castName.autoSizeTextType
-            castName.text = String.format("%s as %s", cast.name, cast.character )
-
-            cardView.addView(imageView)
-
-            linearLayout.addView(cardView)
-            linearLayout.addView(castName)
-
-            binding.castLinearLayout.addView(linearLayout)
+        val linearLayoutParams by lazy {
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+             ).also {
+                 it.setMargins(20,20,20, 20)
+            }
         }
 
-    }
+        val cardNameLayoutParams by lazy {
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).also {
+                it.setMargins(20,0, 0 ,0)
+            }
+        }
 
-}
+        val imageViewLayoutParams by lazy {
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        when(container)
+        {
+            binding.castLinearLayout -> {
+
+                val cardViewLayoutParams = LinearLayout.LayoutParams(150, 200)
+                list.filterIsInstance<MovieInfo.Credits.Cast>().forEach {
+
+                    val linearLayout = LinearLayout(this.requireContext())
+                    linearLayout.orientation = LinearLayout.HORIZONTAL
+                    linearLayout.layoutParams = linearLayoutParams
+
+                    val cardView = CardView(this.requireContext())
+                    cardView.radius = 20F
+                    cardView.elevation = 8F
+                    cardView.layoutParams = cardViewLayoutParams
+
+                    val imageView = ImageView(this.requireContext())
+                    imageView.scaleType = ImageView.ScaleType.FIT_XY
+                    imageView.layoutParams = imageViewLayoutParams
+                    Glide.with(imageView)
+                        .load(IMAGE_BASE_URL + it.profile_path)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .error(android.R.drawable.ic_menu_close_clear_cancel)
+                        .into(imageView)
+
+                    val castName = TextView(this.requireContext())
+                    castName.layoutParams = cardNameLayoutParams
+                    castName.width = 200
+                    castName.setTextColor(Color.WHITE)
+                    castName.autoSizeTextType
+                    castName.text = String.format("%s as %s", it.name, it.character)
+
+                    cardView.addView(imageView)
+
+                    linearLayout.addView(cardView)
+                    linearLayout.addView(castName)
+
+                   container.addView(linearLayout)
+                }
+            }
+            binding.similarMoviesLinearLayout -> {
+
+                val cardViewLayoutParams = LinearLayout.LayoutParams(200, 300)
+                    .also {
+                        it.setMargins(5,5, 5, 5 )
+                    }
+
+                list.filterIsInstance<MovieEntity>().forEach {
+
+                        val cardView = CardView(this.requireContext()).apply {
+                            radius = 20F
+                            elevation = 8F
+                            layoutParams = cardViewLayoutParams
+                        }
+
+
+
+                        val imageView = ImageView(this.requireContext())
+                        imageView.scaleType = ImageView.ScaleType.FIT_XY
+                        imageView.layoutParams = imageViewLayoutParams
+                        Glide.with(imageView)
+                            .load(IMAGE_BASE_URL + it.poster_path)
+                            .transition(DrawableTransitionOptions.withCrossFade())
+                            .error(android.R.drawable.ic_menu_close_clear_cancel)
+                            .into(imageView)
+
+                        cardView.addView(imageView)
+                        container.addView(cardView)
+                    }
+                }
+        }
+    }
+ }
+
+
 
 
 

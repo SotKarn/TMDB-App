@@ -1,6 +1,7 @@
 package com.example.tmdbapp.di
 
 import com.example.tmdbapp.retrofit.IWebService
+import com.example.tmdbapp.retrofit.IWebService.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RetrofitModule
 {
-    private const val BASE_URL = "https://api.themoviedb.org/3/"
+
 
     @Singleton
     @Provides

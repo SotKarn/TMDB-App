@@ -1,9 +1,7 @@
 package com.example.tmdbapp.retrofit
 
 import com.example.tmdbapp.BuildConfig
-import com.example.tmdbapp.model.MovieEntity
 import com.example.tmdbapp.model.MovieInfo
-import com.example.tmdbapp.model.MovieReviews
 import com.example.tmdbapp.model.MoviesResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -21,10 +19,15 @@ interface IWebService
     @GET("movie/{movie_id}?append_to_response=credits")
     suspend fun getMovieInfo(@Path("movie_id") movieId: Int, @Query("api_key") apiKey:String = BuildConfig.API_KEY): MovieInfo
 
-    @GET("movie/{movie_id}/reviews")
-    suspend fun getMovieReviews(@Path("movie_id") movieId: Int, @Query("api_key") apiKey:String = BuildConfig.API_KEY): MovieReviews
-
     @GET("movie/{movie_id}/similar")
-    suspend fun getSimilarMovies(@Path("movie_id") movieId: Int, @Query("api_key") apiKey:String = BuildConfig.API_KEY ): MoviesResponse
+    suspend fun getSimilarMovies(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey:String = BuildConfig.API_KEY,
+    ): MoviesResponse
 
+
+    companion object{
+        const val IMAGE_BASE_URL: String = "https://image.tmdb.org/t/p/w500"
+        const val BASE_URL = "https://api.themoviedb.org/3/"
+    }
 }

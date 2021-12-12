@@ -3,8 +3,6 @@ package com.example.tmdbapp.repository
 import androidx.paging.*
 import com.example.tmdbapp.model.MovieEntity
 import com.example.tmdbapp.model.MovieInfo
-import com.example.tmdbapp.model.MovieReviews
-import com.example.tmdbapp.model.MoviesResponse
 import com.example.tmdbapp.paging.PopularMoviesRemoteMediator
 import com.example.tmdbapp.paging.SearchPagingSource
 import com.example.tmdbapp.retrofit.IWebService
@@ -53,16 +51,9 @@ class MyRepository(
         }
     }
 
-
-    suspend fun getMovieReviews(id: Int): MovieReviews {
-        return webService.getMovieReviews(movieId = id)
-    }
-
-    suspend fun getSimilarMovies(id: Int): MoviesResponse {
-        return webService.getSimilarMovies(movieId = id)
-    }
-
-    companion object{
-        const val IMAGE_BASE_URL: String = "https://image.tmdb.org/t/p/w500"
+    @ExperimentalPagingApi
+    suspend fun getSimilarMovies(id: Int): Flow<List<MovieEntity>> = flow {
+        val results = webService.getSimilarMovies(movieId = id).results
+        emit(results)
     }
 }
